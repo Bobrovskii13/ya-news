@@ -26,10 +26,10 @@ class TestRoutes(TestCase):
             news=cls.news,
             author=cls.author,
             text='Текст комментария'
-        ) 
+        )
 
     def test_pages_available(self):
-        """Тест доступности страниц для всех пользователей (авторизованных и анонимных)."""
+        """Тест доступности страниц для всех."""
         urls = (
             ('news:home', None),
             ('news:detail', (self.news.id,)),
@@ -55,7 +55,7 @@ class TestRoutes(TestCase):
                     url = reverse(name, args=(self.comment.id,))
                     response = self.client.get(url)
                     self.assertEqual(response.status_code, status)
-    
+
     def test_redirect_for_anonymous_client(self):
         """Тест перенаправления анонимного пользователя на страницу входа."""
         login_url = reverse('users:login')

@@ -16,7 +16,7 @@ class TestHomePage(TestCase):
     """Тесты для главной страницы с новостями."""
 
     HOME_URL = reverse('news:home')
-    
+
     @classmethod
     def setUpTestData(cls):
         """Создаем больше новостей, чем отображается на главной странице."""
@@ -32,7 +32,7 @@ class TestHomePage(TestCase):
         News.objects.bulk_create(all_news)
 
     def test_news_count(self):
-        """Тест отображения правильного количества новостей на главной странице."""
+        """Тест отображения нужного количества новостей на главной странице."""
         response = self.client.get(self.HOME_URL)
         object_list = response.context['object_list']
         news_count = object_list.count()
@@ -67,7 +67,7 @@ class TestDetailPage(TestCase):
             comment.save()
 
     def test_comments_order(self):
-        """Тест правильного порядка комментариев на странице новости (по дате создания)."""
+        """Тест порядка комментариев по дате."""
         response = self.client.get(self.detail_url)
         self.assertIn('news', response.context)
         news = response.context['news']
@@ -75,15 +75,15 @@ class TestDetailPage(TestCase):
         all_timestamps = [comment.created for comment in all_comments]
         sorted_timestamps = sorted(all_timestamps)
         self.assertEqual(all_timestamps, sorted_timestamps)
-    
+
     def test_anonymous_client_has_no_form(self):
-        """Тест отсутствия формы для анонимного пользователя на странице новости."""
+        """Тест отсутствия формы для анонима."""
         response = self.client.get(self.detail_url)
         self.assertNotIn('form', response.context)
-        
+
     def test_authorized_client_has_form(self):
-        """Тест наличия формы для авторизованного пользователя на странице новости."""
+        """Тест наличия формы для авторизованного пользователя."""
         self.client.force_login(self.author)
         response = self.client.get(self.detail_url)
         self.assertIn('form', response.context)
-        self.assertIsInstance(response.context['form'], CommentForm) 
+        self.assertIsInstance(response.context['form'], CommentForm)

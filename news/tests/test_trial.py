@@ -5,7 +5,7 @@ from django.test import TestCase
 from news.models import News
 
 
-class TestNews(TestCase): 
+class TestNews(TestCase):
 
     TITLE = 'Заголовок новости'
     TEXT = 'Тестовый текст'
@@ -29,6 +29,3 @@ class TestNews(TestCase):
     @unittest.skip('Пропущен тренировочный тест.')
     def test_text(self):
         self.assertEqual(self.news.text, self.TEXT)
-
-
-
