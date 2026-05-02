@@ -12,6 +12,7 @@ from pytest_lazyfixture import lazy_fixture as lf
         ('news:home', None),
         ('news:detail', lf('news_id_for_args')),
         ('users:login', None),
+        ('users:logout', None),
         ('users:signup', None),
     )
 )
@@ -19,7 +20,10 @@ from pytest_lazyfixture import lazy_fixture as lf
 def test_pages_available_for_anonymous_users(client, name, args):
     """Тест доступности страниц для всех."""
     url = reverse(name, args=args)
-    response = client.get(url)
+    if 'logout' in name:
+        response = client.post(url)
+    else:
+        response = client.get(url)
     assert response.status_code == HTTPStatus.OK
 
 

@@ -9,7 +9,7 @@ from yanews import settings
 
 
 @pytest.fixture
-def autor(django_user_model):
+def author(django_user_model):
     """Автор комментария."""
     return django_user_model.objects.create(username='Автор')
 
@@ -21,10 +21,10 @@ def not_author(django_user_model):
 
 
 @pytest.fixture
-def author_client(autor):
+def author_client(author):
     """Авторизованный клиент."""
     client = Client()
-    client.force_login(autor)
+    client.force_login(author)
     return client
 
 
@@ -64,24 +64,24 @@ def news_id_for_args(news):
 
 
 @pytest.fixture
-def comment(news, autor):
+def comment(news, author):
     """Комментарий к новости."""
     return news.comment_set.create(
         news=news,
-        author=autor,
+        author=author,
         text='Текст комментария'
     )
 
 
 @pytest.fixture
-def comments_batch(news, autor):
+def comments_batch(news, author):
     """Набор комментариев к новости."""
     now = timezone.now()
     comments = []
     for index in range(10):
         comment = news.comment_set.create(
             news=news,
-            author=autor,
+            author=author,
             text=f'Текст {index}',
         )
         comment.created = now + timedelta(days=index)

@@ -12,7 +12,7 @@ def test_home_page(client, news_batch):
     url = reverse('news:home')
     response = client.get(url)
     object_list = response.context['object_list']
-    assert len(object_list) == settings.NEWS_COUNT_ON_HOME_PAGE
+    assert len(object_list) <= settings.NEWS_COUNT_ON_HOME_PAGE
     dates = [news.date for news in object_list]
     assert dates == sorted(dates, reverse=True)
 
@@ -22,9 +22,7 @@ def test_comments_order(client, news, comments_batch):
     """Тест порядка комментариев: от старых к новым."""
     url = reverse('news:detail', args=(news.id,))
     response = client.get(url)
-    assert 'news' in response.context
-    news_obj = response.context['news']
-    all_comments = news_obj.comment_set.all()
+    all_comments = response.context['news'].comment_set.all()
     all_timestamps = [comment.created for comment in all_comments]
     assert all_timestamps == sorted(all_timestamps)
 

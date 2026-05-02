@@ -15,7 +15,12 @@ def test_anonymous_user_cant_create_comment(client, news_id_for_args):
     assert Comment.objects.count() == 0
 
 
-def test_user_can_create_comment(author_client, autor, news, news_id_for_args):
+def test_user_can_create_comment(
+        author_client,
+        author,
+        news,
+        news_id_for_args
+):
     """Авторизованный пользователь может отправить комментарий."""
     url = reverse('news:detail', args=news_id_for_args)
     form_data = {'text': 'Текст комментария'}
@@ -24,7 +29,7 @@ def test_user_can_create_comment(author_client, autor, news, news_id_for_args):
     assert Comment.objects.count() == 1
     comment = Comment.objects.get()
     assert comment.text == form_data['text']
-    assert comment.author == autor
+    assert comment.author == author
     assert comment.news == news
 
 
