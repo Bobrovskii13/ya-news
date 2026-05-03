@@ -17,7 +17,7 @@ def test_home_page(client, news_batch, home_url):
     assert dates == sorted(dates, reverse=True)
 
 
-def test_comments_order(client, news, comments_batch, detail_news_url):
+def test_comments_order(client, comments_batch, detail_news_url):
     """Тест порядка комментариев: от старых к новым."""
     response = client.get(detail_news_url)
     all_comments = response.context['news'].comment_set.all()
@@ -32,7 +32,7 @@ def test_comments_order(client, news, comments_batch, detail_news_url):
         (lf('author_client'), True),
     ),
 )
-def test_client_has_form(parametrized_client, has_form, news, detail_news_url):
+def test_client_has_form(parametrized_client, has_form, detail_news_url):
     """Анонимный клиент не видит форму, авторизованный — видит."""
     response = parametrized_client.get(detail_news_url)
     assert ('form' in response.context) is has_form

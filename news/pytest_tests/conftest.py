@@ -86,12 +86,6 @@ def comments_batch(news, author):
 
 
 @pytest.fixture
-def comment_id_for_args(comment):
-    """ID комментария для передачи в аргументы."""
-    return (comment.id,)
-
-
-@pytest.fixture
 def home_url():
     return reverse('news:home')
 
